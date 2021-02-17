@@ -10,11 +10,13 @@ export default class History {
   /**
    * 새 History 생성
    * @param {Game} gameInstance - 이 역사가 연결되어 있는 게임
-   * @param {Array<Object>} events - 이벤트 목록
+   * @param {Array<Event>} events - 이벤트 목록
    */
   constructor(gameInstance, events) {
     this._gameInstance = gameInstance;
     this._events = events.slice();
+    this._now = new Date();
+    this._eventIdx = 0;
   }
 
   /**
@@ -28,5 +30,55 @@ export default class History {
     const events = fileJson.map(event => Event.fromJson(this._gameInstance, event));
 
     return new History(gameInstance, events);
+  }
+
+  /**
+   * 시간 빨리감기
+   * @param {number} time - 빨리감을 시간(단위: ms)
+   */
+  forward(time = 86400000) {
+    this._now = new Date(this._now.getTime() + time);
+    const newIdx = this._events.findIndex(event => event.started());
+    this._events.slice(this._eventIdx, newIdx).forEach(event => event.forward());
+    this._eventIdx = newIdx + 1;
+  }
+
+  /**
+   * 되감기
+   * @param {number} time - 되감을 시간(단위: ms)
+   */
+  rewind(time = 86400000) {
+    this._now = new Date(this._now.getTime() - time);
+    /**
+     * @todo 되돌리기 코드 작성해야 함
+     */
+  }
+
+  /**
+   * 원하는 시간으로 이동
+   * @param {number} time - 이동할 시간(단위: ms)
+   */
+  slip(time) {
+    this._now = new Date(time);
+    /**
+     * @todo 시간 이동 코드 작성해야 함
+     */
+  }
+
+  /**
+   * 이벤트를 기준으로 되감기
+   * @param {number} num - 되감을 이벤트 수
+   */
+  rewindEvent(num) {
+    this._events.slice(this._eventIdx - num, this._eventIdx).forEach(event => event.rewind());
+    this._eventIdx -= num;
+  }
+
+  /**
+   * 현재 시간을 얻어옴
+   * @returns {Date} - 현재 시간
+   */
+  now() {
+    return this._now;
   }
 }

@@ -6,4 +6,8 @@ export default class Game {
     this.history = new History(this);
     this.player = new Player();
   }
+
+  now() {
+    return this.history.now();
+  }
 };

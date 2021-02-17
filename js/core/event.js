@@ -11,13 +11,17 @@ export default class Event {
   /**
    * 새 Event 생성
    * @param {Game} gameInstance - 이벤트가 연결되어 있는 게임
-   * @param {Array<Condition>} conditions - 이벤트가 발생하기 위한 조건들
-   * @param {Array<Effect>} effects - 이벤트가 발생할 때의 효과
+   * @param {Array<number>} timeRange - 이벤트가 발생하는 시간(시작과 끝)
+   * @param {Condition} conditions - 이벤트가 발생하기 위한 조건들
+   * @param {Effect} effects - 이벤트가 발생할 때의 효과들
    */
-  constructor(gameInstance, conditions, effects) {
+  constructor(gameInstance, timeRange, conditions, effects) {
     this._gameInstance = gameInstance;
-    this._conditions = conditions.slice();
-    this._effects = effects.slice();
+    this._timeRange = new Condition(timeRange);
+    this._condition = new Condition(gameInstance, conditions);
+    this._effect = new Effect(gameInstance, effects);
+
+    this._achievedTime = null;
   }
 
   /**
@@ -30,8 +34,46 @@ export default class Event {
   static fromJson(gameInstance, jsonEvent) {
     return new Event(
       gameInstance,
-      new Condition(gameInstance, jsonEvent.conditions),
-      new Effect(gameInstance, jsonEvent.effects)
+      jsonEvent.conditions,
+      jsonEvent.effects
     );
+  }
+
+  /**
+   * 현재 시각을 기준으로 이 이벤트가 이전에 활성화되었는지 확인함
+   * @returns {boolean} true면 현재 시각을 기준으로 과거에 이 이벤트가 발생할 수 있었음
+   */
+  started() {
+    const nowTime = this._gameInstance.now().getTime();
+    return this._timeRange[0] <= nowTime;
+  }
+
+  /**
+   * 현재 시각을 기준으로 이 이벤트가 활성화되었는지 확인함
+   * @returns {boolean} true면 현재 시각을 기준으로 조건 충족시 이 이벤트가 발생할 수 있음
+   */
+  available() {
+    const nowTime = this._gameInstance.now().getTime();
+    return this._timeRange[0] <= nowTime && nowTime <= this._timeRange[1];
+  }
+
+  /**
+   * 해당 이벤트를 확인하고 조건에 맞을 경우 실행함
+   */
+  forward() {
+    if(this._condition.check()) {
+      this._effect.do();
+      this._achievedTime = this._gameInstance.now();
+    }
+  }
+
+  /**
+   * 해당 이벤트를 확인하고 조건에 맞을 경우 취소함
+   */
+  rewind() {
+    if(this._achievedTime !== null) {
+      this._effect.undo();
+      this._achievedTime = null;
+    }
   }
 }
