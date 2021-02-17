@@ -11,4 +11,11 @@ export default class Inventory {
   constructor() {
     this._list = [];
   }
+
+  add(item, count = 1) {
+    const existingItem = this._list.find(existing => existing.name === item.name);
+    if(existingItem) {
+      existingItem.add(count);
+    }
+  }
 };

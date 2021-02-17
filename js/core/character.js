@@ -14,5 +14,10 @@ export default class Character {
   constructor(gameInstance) {
     this._gameInstance = gameInstance;
     this._inventory = new Inventory();
+    this._money = 0;
+  }
+
+  giveItem(item) {
+    this._inventory.add(item);
   }
 }

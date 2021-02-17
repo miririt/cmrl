@@ -41,7 +41,7 @@ export default class History {
   }
 
   /**
-   * 되감기
+   * 시간 되감기
    * @param {number} time - 되감을 시간(단위: ms)
    */
   rewind(time = 86400000) {
@@ -61,11 +61,11 @@ export default class History {
 
   /**
    * 이벤트를 기준으로 되감기
-   * @param {number} num - 되감을 이벤트 수
+   * @param {number} count - 되감을 이벤트 수
    */
-  rewindEvent(num) {
-    this._events.slice(this._eventIdx - num, this._eventIdx).forEach(event => event.rewind());
-    this._eventIdx -= num;
+  rewindEvent(count) {
+    this._events.slice(this._eventIdx - count, this._eventIdx).forEach(event => event.rewind());
+    this._eventIdx -= count;
   }
 
   /**

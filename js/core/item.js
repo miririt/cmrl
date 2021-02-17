@@ -19,7 +19,6 @@ export default class Item {
 
   /**
    * 새 Item 생성
-   * 
    * @param {Object} data - 아이템 정보
    * @param {Item.TYPE} type - 아이템 종류
    * @param {string} name - 아이템 이름
@@ -32,6 +31,21 @@ export default class Item {
     quantity: 1,
     maxQuantity: 1
   }) {
-    this.data = {...data};
+    this.type = data.type;
+    this.name = data.name;
+    this.quantity = data.quantity;
+    this.maxQuantity = data.maxQuantity;
+  }
+
+  /**
+   * 아이템 개수 추가
+   * @param {number} count - 추가할 개수
+   * @returns {number} - 총 아이템 중첩 개수
+   */
+  add(count) {
+    this.quantity += count;
+    if(this.quantity > this.maxQuantity) this.quantity = this.maxQuantity;
+
+    return this.quantity
   }
 };
