@@ -1,4 +1,4 @@
-import Inventory from "./inventory";
+import Inventory from "./inventory.js";
 
 /**
  * 캐릭터 클래스

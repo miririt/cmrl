@@ -17,7 +17,7 @@ export default class Event {
    */
   constructor(gameInstance, timeRange, conditions, effects) {
     this._gameInstance = gameInstance;
-    this._timeRange = new Condition(timeRange);
+    this._timeRange = timeRange;
     this._condition = new Condition(gameInstance, conditions);
     this._effect = new Effect(gameInstance, effects);
 
@@ -34,6 +34,7 @@ export default class Event {
   static fromJson(gameInstance, jsonEvent) {
     return new Event(
       gameInstance,
+      jsonEvent.timeRange,
       jsonEvent.conditions,
       jsonEvent.effects
     );

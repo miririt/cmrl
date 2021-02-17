@@ -1,4 +1,4 @@
-import Character from "./character";
+import Character from "./character.js";
 
 /**
  * 플레이어 클래스

@@ -25,9 +25,9 @@ export default class History {
    * @param {string} fromFile - 역사를 불러올 파일명
    * @returns {Promise<History>} - 불러온 History를 반환하는 Promise
    */
-  async static load(gameInstance, fromFile) {
+  static async load(gameInstance, fromFile) {
     const fileJson = await fetch(fromFile).then(resp => resp.json());
-    const events = fileJson.map(event => Event.fromJson(this._gameInstance, event));
+    const events = fileJson.map(event => Event.fromJson(gameInstance, event));
 
     return new History(gameInstance, events);
   }
@@ -37,10 +37,7 @@ export default class History {
    * @param {number} time - 빨리감을 시간(단위: ms)
    */
   forward(time = 86400000) {
-    this._now = new Date(this._now.getTime() + time);
-    const newIdx = this._events.findIndex(event => event.started());
-    this._events.slice(this._eventIdx, newIdx).forEach(event => event.forward());
-    this._eventIdx = newIdx + 1;
+    this.slip(this._now.getTime() + time);
   }
 
   /**
@@ -48,10 +45,7 @@ export default class History {
    * @param {number} time - 되감을 시간(단위: ms)
    */
   rewind(time = 86400000) {
-    this._now = new Date(this._now.getTime() - time);
-    /**
-     * @todo 되돌리기 코드 작성해야 함
-     */
+    this.slip(this._now.getTime() - time);
   }
 
   /**
@@ -60,9 +54,9 @@ export default class History {
    */
   slip(time) {
     this._now = new Date(time);
-    /**
-     * @todo 시간 이동 코드 작성해야 함
-     */
+    const newIdx = this._events.findIndex(event => !event.started());
+    this._events.slice(this._eventIdx, newIdx).forEach(event => event.forward());
+    this._eventIdx = newIdx;
   }
 
   /**
