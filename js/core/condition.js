@@ -1,30 +1,35 @@
+import ISerializable from "./serializable.js";
 
 /**
  * 이벤트에 사용될 조건 클래스
  * @class
  * @classdesc 어떤 이벤트가 발생하기 위한 조건을 의미함
  */
-export default class Condition {
+export default class Condition extends ISerializable {
 
   /**
    * 새 Condition 생성
-   * @param {Game} gameInstance - 조건이 연결되어 있는 게임
-   * @param {Array<Object>} rules - 조건 목록
+   * @param {string} name - 조건 이름
+   * @param {string} type - 조건 타입
+   * @param {Object} data - 조건 정보
    */
-  constructor(gameInstance, rules) {
-    this._gameInstance = gameInstance;
-    this._rules = rules.slice();
+  constructor(name, type, data) {
+    super();
+    this.name = name;
+    this.type = type;
+    this.data = data;
   }
 
   /**
-   * 조건이 달성되었는지 확인함
-   * @returns {boolean} - true일 경우 이 조건은 달성되었음
+   * JSON에서 조건 생성
+   * @param {Object} jsonCondition - 조건 객체
    */
-  check() {
-    return this._rules.every(rule => {
-      /**
-       * @todo rule check 작성할것
-       */
-    });
+  static fromJson(jsonCondition) {
+    return new this(
+      jsonCondition.name,
+      jsonCondition.type,
+      jsonCondition.data
+    );
   }
+
 }

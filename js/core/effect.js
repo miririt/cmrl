@@ -1,36 +1,34 @@
+import ISerializable from "./serializable.js";
 
 /**
  * 효과 클래스
  * @class
- * @classdesc 이벤트 발생 시 작용하는 효과를 의미함
+ * @classdesc 이벤트 발생 시, 아이템 사용시, 스킬 사용시 작용하는 효과를 의미함
  */
-export default class Effect {
+export default class Effect extends ISerializable {
 
   /**
    * 새 Effect 생성
-   * @param {Game} gameInstance - 효과가 연결되어 있는 게임
-   * @param {Array<Object>} rules - 효과 목록
+   * @param {string} name - 효과 이름
+   * @param {string} type - 효과 타입
+   * @param {Object} data - 효과 정보
    */
-  constructor(gameInstance, rules) {
-    this._gameInstance = gameInstance;
-    this.rules = rules.slice();
+  constructor(name, type, data) {
+    super();
+    this.name = name;
+    this.type = type;
+    this.data = data;
   }
 
   /**
-   * 효과를 발생시킴
+   * JSON에서 효과 생성
+   * @param {Object} jsonEffect - 효과 객체
    */
-  do() {
-    /**
-     * @todo effect do 작성할것
-     */
-  }
-
-  /**
-   * 효과를 취소시킴
-   */
-  undo() {
-    /**
-     * @todo effect undo 작성할것
-     */
+  static fromJson(jsonEffect) {
+    return new this(
+      jsonEffect.name,
+      jsonEffect.type,
+      jsonEffect.data
+    );
   }
 }

@@ -1,4 +1,7 @@
-import History from "./history.js";
+import ConditionManager from "../modules/condition-manager.js";
+import EffectManager from "../modules/effect-manager.js";
+import EventManager from "../modules/event-manager.js";
+import ItemManager from "../modules/item-manager.js";
 import Player from "./player.js";
 
 export default class Game {
@@ -19,7 +22,10 @@ export default class Game {
   constructor() {
     this._load('player', Player);
 
-    this._asyncLoad('history', History.load(this, '../../json/history.json'));
+    this._asyncLoad('conditionManager', ConditionManager.load(this, '../../json/conditions.json'));
+    this._asyncLoad('effectManager', EffectManager.load(this, '../../json/effects.json'));
+    this._asyncLoad('eventManager', EventManager.load(this, '../../json/events.json'));
+    this._asyncLoad('itemManager', ItemManager.load(this, '../../json/items.json'));
 
     this.setState(Game.STATE.FreeAction);
   }
@@ -43,11 +49,48 @@ export default class Game {
   }
 
   /**
+   * Condition 관련 코드
+   */
+
+  /**
+   * 조건이 달성되었는지 확인함
+   * @param {string} conditionName - 확인할 조건의 이름
+   * @returns {boolean} - true일 경우 이 조건은 달성되었음
+   */
+  checkCondition(conditionName) {
+    return this.conditionManager.checkCondition(conditionName);
+  }
+
+  /**
+   * Effect 관련 코드
+   */
+
+  /**
+   * 효과를 발생시킴
+   * @param {string} effectName - 발생할 조건의 이름
+   */
+  doEffect(effectName) {
+    return this.effectManager.doEffect(effectName);
+  }
+
+  /**
+   * 효과를 발생시킴
+   * @param {string} effectName - 발생할 조건의 이름
+   */
+  undoEffect(effectName) {
+    return this.effectManager.undoEffect(effectName);
+  }
+
+  /**
+   * Event 관련 코드
+   */
+
+  /**
    * 현재 게임의 시각을 얻어옴
    * @returns {Date} - 현재 게임의 시각
    */
   now() {
-    return this.history.now();
+    return this.eventManager.now();
   }
 
   /**

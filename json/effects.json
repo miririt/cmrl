@@ -1,0 +1,7 @@
+[{
+    "name": "1000원 습득",
+    "type": "get-money",
+    "data": {
+        "amount": 1000
+    }
+}]
