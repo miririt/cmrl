@@ -4,6 +4,16 @@ import EventManager from "../modules/event-manager.js";
 import ItemManager from "../modules/item-manager.js";
 import Player from "./player.js";
 
+/**
+ * 게임 클래스
+ * @class
+ * @classdesc 게임 인스턴스
+ * 
+ * @property {ConditionManager} conditionManager
+ * @property {EffectManager} effectManager
+ * @property {EventManager} eventManager
+ * @property {ItemManager} itemManager
+ */
 export default class Game {
 
   /**
@@ -46,6 +56,23 @@ export default class Game {
    */
   _asyncLoad(name, promise) {
     promise.then(result => { this[name] = result; });
+  }
+
+  /**
+   * Character 관련 코드
+   */
+
+  /**
+   * @todo CharacterManager 작업할것
+   */
+
+  /**
+   * 
+   * @param {string} characterName - 찾을 캐릭터의 이름
+   * @returns {Character} - 찾아낸 캐릭터
+   */
+  getCharacter(characterName) {
+    return this.characterManager.getObject(characterName);
   }
 
   /**

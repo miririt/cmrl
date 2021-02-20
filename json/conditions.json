@@ -2,7 +2,8 @@
     "name": "돈 5000원 이상 소유",
     "type": "money",
     "data": {
-        "range": ">",
+        "character": "$Player",
+        "operator": ">=",
         "value": 5000
     }
 }]

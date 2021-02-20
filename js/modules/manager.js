@@ -1,4 +1,6 @@
 
+import Game from "../core/game.js";
+
 /**
  * 매니저 원형 클래스를 생성함
  * @param {Object} Type - 매니저가 담당할 타입을 지정
@@ -8,8 +10,10 @@ export default function CreateManager(Type) {
    * 매니저 원형 클래스
    * @class
    * @classdesc 게임 내에서 특정 객체들의 생성 및 정보 저장을 담당
+   * 
+   * @property {Game} _gameInstance - 이 매니저가 연결된 게임 인스턴스
    */
-  return class {
+  return class Manager {
     /**
      * 새 Manager 생성
      * @param {Game} gameInstance - 이 매니저가 연결되어 있는 게임
