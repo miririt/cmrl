@@ -1,3 +1,4 @@
+import ISerializable from "./serializable.js";
 
 /**
  * 아이템 클래스
@@ -40,25 +41,22 @@ export default class Item {
    * @class
    * @classdesc 아이템 템플릿을 담당
    */
-  static Template = class {
+  static Template = class extends ISerializable {
 
     /**
      * 새 Item.Template 생성
      * @param {Object} data - 아이템 정보
      * @param {Item.TYPE} data.type - 아이템 종류
      * @param {string} data.name - 아이템 이름
-     * @param {number} data.quantity - 아이템 수량
      * @param {number} data.maxQuantity - 아이템 최대 수량
      */
     constructor(data = {
       type: Item.TYPE.Consumable,
       name: null,
-      quantity: 1,
       maxQuantity: 1
     }) {
       this.type = data.type;
       this.name = data.name;
-      this.quantity = data.quantity;
       this.maxQuantity = data.maxQuantity;
     }
 
@@ -67,24 +65,23 @@ export default class Item {
      * @param {Object} jsonItem - 아이템 정보
      * @param {Item.TYPE} jsonItem.type - 아이템 종류
      * @param {string} jsonItem.name - 아이템 이름
-     * @param {number} jsonItem.quantity - 아이템 수량
      * @param {number} jsonItem.maxQuantity - 아이템 최대 수량
      */
     static fromJson(jsonItem) {
       return new this({
         type: Item.TYPE.fromString(jsonItem.type),
         name: jsonItem.name,
-        quantity: jsonItem.quantity || 1,
         maxQuantity: jsonItem.maxQuantity
       });
     }
 
     /**
      * 이 템플릿에서 새 아이템 객체 생성
+     * @param {number} quantity - 생성된 아이템의 개수
      * @returns {Item} - 이 템플릿을 바탕으로 생성된 아이템
      */
-    build() {
-      return Item.fromTemplate(this);
+    build(quantity) {
+      return Item.fromTemplate(this, quantity);
     }
   };
 
@@ -128,12 +125,14 @@ export default class Item {
   /**
    * 아이템 템플릿에서 아이템 생성
    * @param {Item.Template} itemTemplate - 아이템 템플릿
+   * @param {number} quantity - 아이템 개수
    * @returns {Item}
    */
-  static fromTemplate(itemTemplate) {
+  static fromTemplate(itemTemplate, quantity = 1) {
     return new this({
       type: itemTemplate.type,
       name: itemTemplate.name,
+      quantity: quantity,
       maxQuantity: itemTemplate.maxQuantity
     });
   }

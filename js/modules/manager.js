@@ -1,6 +1,3 @@
-
-import Game from "../core/game.js";
-
 /**
  * 매니저 원형 클래스를 생성함
  * @param {Object} Type - 매니저가 담당할 타입을 지정

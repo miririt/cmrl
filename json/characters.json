@@ -1,4 +1,8 @@
 [{
     "name": "호구",
-    "gold": 1000000
+    "money": 1000000,
+    "inventory": [{
+        "name": "황금색 모래시계",
+        "quantity": 1
+    }]
 }]
