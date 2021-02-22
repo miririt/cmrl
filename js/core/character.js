@@ -12,20 +12,21 @@ export default class Character extends ISerializable {
    * 새 Character 생성
    * @param {string} name - 캐릭터 이름
    * @param {number} money - 캐릭터 소지금
-   * @param {Object} jsonInventory - 캐릭터 인벤토리 JSON
+   * @param {Object} inventory - 캐릭터 인벤토리
    */
-  constructor(name, money, jsonInventory) {
+  constructor(name, money, inventory) {
     this._name = name;
-    this._inventory = Inventory.fromJson(jsonInventory);
+    this._inventory = new Inventory(inventory);
     this._money = money;
   }
 
   /**
    * 캐릭터에게 아이템 지급
-   * @param {Item} item 
+   * @param {string} query - 아이템 이름
+   * @param {number} quantity - 지급할 수량
    */
-  giveItem(item) {
-    this._inventory.add(item);
+  giveItem(query, quantity = 1) {
+    this._inventory.add(query, quantity);
   }
 
   /**

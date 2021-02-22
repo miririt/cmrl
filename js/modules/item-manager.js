@@ -20,6 +20,16 @@ export default class ItemManager extends CreateManager(Item.Template) {
   }
 
   /**
+   * 이름 또는 인덱스로 아이템을 얻어옴
+   * @param {number|string} query - 아이템 이름 string 또는 아이템 인덱스 number
+   * @param {number} quantity - 아이템을 만들어 낼 개수
+   * @returns {Item} - 만들어 낸 아이템
+   */
+  getItem(query, quantity) {
+    return this.getObject(query).build(quantity);
+  }
+
+  /**
    * 이름 또는 인덱스로 아이템 템플릿을 얻어옴
    * @param {number|string} query - 아이템 이름 string 또는 아이템 인덱스 number
    * @returns {Item.Template} - 찾아낸 아이템 템플릿

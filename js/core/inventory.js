@@ -16,20 +16,15 @@ export default class Inventory extends ISerializable {
     this._list = list;
   }
 
-  add(item, count = 1) {
-    const existingItem = this._list.find(existing => existing.name === item.name);
-    if(existingItem) {
-      existingItem.add(count);
-    }
-  }
-
   /**
-   * JSON에서 인벤토리 생성
-   * @param {Object} jsonCharacter - 캐릭터 객체
+   * 아이템을 인벤토리에 추가함
+   * @param {string} query - 아이템 이름
+   * @param {number} quantity - 추가할 수량
    */
-  static fromJson(jsonInventory) {
-    return new this(jsonInventory.map(inventoryItem => {
-      return Item.Template.fromJson(inventoryItem).build(inventoryItem.quantity);
-    }));
+  add(query, quantity = 1) {
+    const existingItem = this._list.find(existing => existing.name === query);
+    if(existingItem) {
+      existingItem.add(quantity);
+    }
   }
 };

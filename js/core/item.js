@@ -139,11 +139,11 @@ export default class Item {
 
   /**
    * 아이템 개수 추가
-   * @param {number} count - 추가할 개수
+   * @param {number} quantity - 추가할 개수
    * @returns {number} - 총 아이템 중첩 개수
    */
-  add(count) {
-    this.quantity += count;
+  add(quantity) {
+    this.quantity += quantity;
     if(this.quantity > this.maxQuantity) this.quantity = this.maxQuantity;
 
     return this.quantity
