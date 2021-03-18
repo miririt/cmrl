@@ -9,9 +9,9 @@ export default class Effect extends ISerializable {
 
   /**
    * 새 Effect 생성
-   * @param {string} name - 효과 이름
-   * @param {string} type - 효과 타입
-   * @param {Object} data - 효과 정보
+   * @param {string} name 효과 이름
+   * @param {string} type 효과 타입
+   * @param {Object} data 효과 정보
    */
   constructor(name, type, data) {
     super();
@@ -22,7 +22,8 @@ export default class Effect extends ISerializable {
 
   /**
    * JSON에서 효과 생성
-   * @param {Object} jsonEffect - 효과 객체
+   * @param {Object} jsonEffect 효과 JSON
+   * @returns {Effect} 효과 객체
    */
   static fromJson(jsonEffect) {
     return new this(
@@ -30,5 +31,17 @@ export default class Effect extends ISerializable {
       jsonEffect.type,
       jsonEffect.data
     );
+  }
+
+  /**
+   * 효과에서 JSON 생성
+   * @returns {Object} 효과 JSON
+   */
+  toJson() {
+    return {
+      'name': this.name,
+      'type': this.type,
+      'data': this.data
+    };
   }
 }

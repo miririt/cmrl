@@ -10,8 +10,8 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 새 EventManager 생성
-   * @param {Game} gameInstance - 이 이벤트 매니저가 연결되어 있는 게임
-   * @param {Array<Event>} events - 이벤트 목록
+   * @param {Game} gameInstance 이 이벤트 매니저가 연결되어 있는 게임
+   * @param {Array<Event>} events 이벤트 목록
    */
   constructor(gameInstance, events) {
     super(gameInstance, events);
@@ -23,7 +23,7 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 시간 빨리감기
-   * @param {number} time - 빨리감을 시간(단위: ms)
+   * @param {number} time 빨리감을 시간(단위: ms)
    */
   forward(time = 86400000) {
     this.slip(this._now.getTime() + time);
@@ -31,7 +31,7 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 시간 되감기
-   * @param {number} time - 되감을 시간(단위: ms)
+   * @param {number} time 되감을 시간(단위: ms)
    */
   rewind(time = 86400000) {
     this.slip(this._now.getTime() - time);
@@ -39,7 +39,7 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 원하는 시간으로 이동
-   * @param {number} time - 이동할 시간(단위: ms)
+   * @param {number} time 이동할 시간(단위: ms)
    */
   slip(time) {
     this._now = new Date(time);
@@ -50,7 +50,7 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 이벤트를 기준으로 되감기
-   * @param {number} count - 되감을 이벤트 수
+   * @param {number} count 되감을 이벤트 수
    */
   rewindEventCount(count) {
     this._events.slice(this._eventIdx - count, this._eventIdx).forEach(event => this.rewindEvent(event));
@@ -59,38 +59,38 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 현재 시각을 기준으로 이 이벤트가 이전에 활성화되었는지 확인함
-   * @param {Event} event - 확인할 이벤트
+   * @param {Event} event 확인할 이벤트
    * @returns {boolean} true면 현재 시각을 기준으로 과거에 이 이벤트가 발생할 수 있었음
    */
   isEventStarted(event) {
-    const nowTime = this._gameInstance.now().getTime();
+    const nowTime = this.now().getTime();
     return event._timeRange[0] <= nowTime;
   }
 
   /**
    * 현재 시각을 기준으로 이 이벤트가 활성화되었는지 확인함
-   * @param {Event} event - 확인할 이벤트
+   * @param {Event} event 확인할 이벤트
    * @returns {boolean} true면 현재 시각을 기준으로 조건 충족시 이 이벤트가 발생할 수 있음
    */
   isEventAvailable(event) {
-    const nowTime = this._gameInstance.now().getTime();
+    const nowTime = this.now().getTime();
     return event._timeRange[0] <= nowTime && nowTime <= event._timeRange[1];
   }
 
   /**
    * 해당 이벤트를 확인하고 조건에 맞을 경우 실행함
-   * @param {Event} event - 확인할 이벤트
+   * @param {Event} event 확인할 이벤트
    */
   forwardEvent(event) {
-    if(event._conditions.every(condition => this._gameInstance.checkCondition(condition))) {
-      event._effects.forEach(effect => this._gameInstance.doEffect(effect));
+    if(event._conditions.every(condition => this._gameInstance.effectManager.checkCondition(condition))) {
+      event._effects.forEach(effect => this._gameInstance.effectManager.doEffect(effect));
       event._achievedTime = event._gameInstance.now();
     }
   }
 
   /**
    * 해당 이벤트를 확인하고 조건에 맞을 경우 취소함
-   * @param {Event} event - 확인할 이벤트
+   * @param {Event} event 확인할 이벤트
    */
   rewindEvent(event) {
     if(event._achievedTime !== null) {
@@ -101,7 +101,7 @@ export default class EventManager extends CreateManager(Event) {
 
   /**
    * 현재 시간을 얻어옴
-   * @returns {Date} - 현재 시간
+   * @returns {Date} 현재 시간
    */
   now() {
     return this._now;

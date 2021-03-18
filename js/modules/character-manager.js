@@ -1,4 +1,5 @@
 import Character from "../core/character.js";
+import Player from "../core/player.js";
 import CreateManager from "./manager.js";
 
 /**
@@ -8,4 +9,15 @@ import CreateManager from "./manager.js";
  */
 export default class CharacterManager extends CreateManager(Character) {
   
+  /**
+   * 새 CharacterManager 생성
+   * @param {Game} gameInstance 이 조건 매니저가 연결되어 있는 게임
+   * @param {Array<Condition>} conditions 조건 목록
+   */
+  constructor(gameInstance, conditions) {
+    super(gameInstance, conditions);
+
+    this._player = new Player();
+    this._characters = this._objects;
+  }
 }

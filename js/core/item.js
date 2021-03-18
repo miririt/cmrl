@@ -19,8 +19,8 @@ export default class Item {
     Key: Symbol(),
     /**
      * 문자열을 Item.TYPE으로 변환
-     * @param {string} string - 타입 스트링
-     * @returns {Item.TYPE} - Item.TYPE으로 변환된 타입
+     * @param {string} string 타입 스트링
+     * @returns {Item.TYPE} Item.TYPE으로 변환된 타입
      */
     fromString: function (string) {
       switch(string) {
@@ -32,6 +32,24 @@ export default class Item {
           return this.Key;
         default:
           return this.All;
+      }
+    },
+
+    /**
+     * Item.TYPE을 문자열로 변환
+     * @param {Item.TYPE} type 아이템 타입
+     * @returns {string} 스트링으로 변환된 Item.TYPE
+     */
+    toString: function (type) {
+      switch(type) {
+        case this.Consumable:
+          return 'consumable';
+        case this.Equipment:
+          return 'equipment';
+        case this.Key:
+          return 'key';
+        default:
+          return 'all';
       }
     }
   });
@@ -45,16 +63,17 @@ export default class Item {
 
     /**
      * 새 Item.Template 생성
-     * @param {Object} data - 아이템 정보
-     * @param {Item.TYPE} data.type - 아이템 종류
-     * @param {string} data.name - 아이템 이름
-     * @param {number} data.maxQuantity - 아이템 최대 수량
+     * @param {Object} data 아이템 정보
+     * @param {Item.TYPE} data.type 아이템 종류
+     * @param {string} data.name 아이템 이름
+     * @param {number} data.maxQuantity 아이템 최대 수량
      */
     constructor(data = {
       type: Item.TYPE.Consumable,
       name: null,
       maxQuantity: 1
     }) {
+      super();
       this.type = data.type;
       this.name = data.name;
       this.maxQuantity = data.maxQuantity;
@@ -62,10 +81,11 @@ export default class Item {
 
     /**
      * JSON에서 아이템 템플릿 생성
-     * @param {Object} jsonItem - 아이템 정보
-     * @param {Item.TYPE} jsonItem.type - 아이템 종류
-     * @param {string} jsonItem.name - 아이템 이름
-     * @param {number} jsonItem.maxQuantity - 아이템 최대 수량
+     * @param {Object} jsonItem 아이템 템플릿 JSON
+     * @param {Item.TYPE} jsonItem.type 아이템 종류
+     * @param {string} jsonItem.name 아이템 이름
+     * @param {number} jsonItem.maxQuantity 아이템 최대 수량
+     * @returns {Item.Template} 아이템 템플릿 객체
      */
     static fromJson(jsonItem) {
       return new this({
@@ -76,9 +96,21 @@ export default class Item {
     }
 
     /**
+     * 아이템 템플릿에서 JSON 생성
+     * @return {Object} 아이템 템플릿 JSON
+     */
+    toJson() {
+      return {
+        'type': Item.TYPE.toString(this.type),
+        'name': this.name,
+        'maxQuantity': this.maxQuantity
+      };
+    }
+
+    /**
      * 이 템플릿에서 새 아이템 객체 생성
-     * @param {number} quantity - 생성된 아이템의 개수
-     * @returns {Item} - 이 템플릿을 바탕으로 생성된 아이템
+     * @param {number} quantity 생성된 아이템의 개수
+     * @returns {Item} 이 템플릿을 바탕으로 생성된 아이템
      */
     build(quantity) {
       return Item.fromTemplate(this, quantity);
@@ -87,11 +119,11 @@ export default class Item {
 
   /**
    * 새 Item 생성
-   * @param {Object} data - 아이템 정보
-   * @param {Item.TYPE} data.type - 아이템 종류
-   * @param {string} data.name - 아이템 이름
-   * @param {number} data.quantity - 아이템 수량
-   * @param {number} data.maxQuantity - 아이템 최대 수량
+   * @param {Object} data 아이템 정보
+   * @param {Item.TYPE} data.type 아이템 종류
+   * @param {string} data.name 아이템 이름
+   * @param {number} data.quantity 아이템 수량
+   * @param {number} data.maxQuantity 아이템 최대 수량
    */
   constructor(data = {
     type: Item.TYPE.Consumable,
@@ -107,11 +139,12 @@ export default class Item {
 
   /**
    * JSON에서 아이템 생성
-   * @param {Object} jsonItem - 아이템 정보
-   * @param {Item.TYPE} jsonItem.type - 아이템 종류
-   * @param {string} jsonItem.name - 아이템 이름
-   * @param {number} jsonItem.quantity - 아이템 수량
-   * @param {number} jsonItem.maxQuantity - 아이템 최대 수량
+   * @param {Object} jsonItem 아이템 JSON
+   * @param {Item.TYPE} jsonItem.type 아이템 종류
+   * @param {string} jsonItem.name 아이템 이름
+   * @param {number} jsonItem.quantity 아이템 수량
+   * @param {number} jsonItem.maxQuantity 아이템 최대 수량
+   * @returns {Item} 아이템 객체
    */
   static fromJson(jsonItem) {
     return new this({
@@ -123,9 +156,22 @@ export default class Item {
   }
 
   /**
+   * 아이템에서 JSON 생성
+   * @return {Object} 아이템 JSON
+   */
+  static toJson() {
+    return {
+      'type': Item.TYPE.toString(this.type),
+      'name': this.name,
+      'quantity': this.quantity,
+      'maxQuantity': this.maxQuantity
+    };
+  }
+
+  /**
    * 아이템 템플릿에서 아이템 생성
-   * @param {Item.Template} itemTemplate - 아이템 템플릿
-   * @param {number} quantity - 아이템 개수
+   * @param {Item.Template} itemTemplate 아이템 템플릿
+   * @param {number} quantity 아이템 개수
    * @returns {Item}
    */
   static fromTemplate(itemTemplate, quantity = 1) {
@@ -139,8 +185,8 @@ export default class Item {
 
   /**
    * 아이템 개수 추가
-   * @param {number} quantity - 추가할 개수
-   * @returns {number} - 총 아이템 중첩 개수
+   * @param {number} quantity 추가할 개수
+   * @returns {number} 총 아이템 중첩 개수
    */
   add(quantity) {
     this.quantity += quantity;

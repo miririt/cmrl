@@ -9,9 +9,9 @@ export default class Condition extends ISerializable {
 
   /**
    * 새 Condition 생성
-   * @param {string} name - 조건 이름
-   * @param {string} type - 조건 타입
-   * @param {Object} data - 조건 정보
+   * @param {string} name 조건 이름
+   * @param {string} type 조건 타입
+   * @param {Object} data 조건 정보
    */
   constructor(name, type, data) {
     super();
@@ -22,7 +22,8 @@ export default class Condition extends ISerializable {
 
   /**
    * JSON에서 조건 생성
-   * @param {Object} jsonCondition - 조건 객체
+   * @param {Object} jsonCondition 조건 JSON
+   * @returns {Condition} 조건 객체
    */
   static fromJson(jsonCondition) {
     return new this(
@@ -30,6 +31,18 @@ export default class Condition extends ISerializable {
       jsonCondition.type,
       jsonCondition.data
     );
+  }
+
+  /**
+   * 조건으로 JSON 생성
+   * @returns {Object} 조건 JSON
+   */
+  toJson() {
+    return {
+      'name': this.name,
+      'type': this.type,
+      'data': this.data
+    };
   }
 
 }
