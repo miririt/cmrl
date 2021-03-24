@@ -1,4 +1,5 @@
 import ISerializable from "./serializable.js";
+import IType from "./type.js";
 
 /**
  * 대화 클래스
@@ -12,36 +13,7 @@ export default class Conversation extends ISerializable {
    * @readonly
    * @enum {Symbol}
    */
-  static TYPE = Object.freeze({
-    Narration: Symbol(),
-    Choice: Symbol(),
-    /**
-     * 문자열을 Conversation.TYPE으로 변환
-     * @param {string} string 타입 스트링
-     * @returns {Conversation.TYPE} Conversation.TYPE으로 변환된 타입
-     */
-    fromString: function (string) {
-      switch(string) {
-        case 'narration':
-          return this.Narration;
-        case 'choice':
-          return this.Choice;
-      }
-    },
-    /**
-     * Conversation.TYPE을 문자열로 변환
-     * @param {Conversation.TYPE} type 대화 타입
-     * @returns {string} 스트링으로 변환된 Conversation.TYPE
-     */
-    toString: function (type) {
-      switch(type) {
-        case this.Narration:
-          return 'narration';
-        case thic.Choice:
-          return 'choice';
-      }
-    }
-  });
+  static TYPE = IType.createType('Narration', 'Choice', 'Quest');
 
   /**
    * 새 Conversation 생성

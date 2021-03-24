@@ -1,4 +1,5 @@
 import ISerializable from "./serializable.js";
+import IType from "./type.js";
 
 /**
  * 아이템 클래스
@@ -12,47 +13,7 @@ export default class Item {
    * @readonly
    * @enum {Symbol}
    */
-  static TYPE = Object.freeze({
-    All: Symbol(),
-    Consumable: Symbol(),
-    Equipment: Symbol(),
-    Key: Symbol(),
-    /**
-     * 문자열을 Item.TYPE으로 변환
-     * @param {string} string 타입 스트링
-     * @returns {Item.TYPE} Item.TYPE으로 변환된 타입
-     */
-    fromString: function (string) {
-      switch(string) {
-        case 'consumable':
-          return this.Consumable;
-        case 'equipment':
-          return this.Equipment;
-        case 'key':
-          return this.Key;
-        default:
-          return this.All;
-      }
-    },
-
-    /**
-     * Item.TYPE을 문자열로 변환
-     * @param {Item.TYPE} type 아이템 타입
-     * @returns {string} 스트링으로 변환된 Item.TYPE
-     */
-    toString: function (type) {
-      switch(type) {
-        case this.Consumable:
-          return 'consumable';
-        case this.Equipment:
-          return 'equipment';
-        case this.Key:
-          return 'key';
-        default:
-          return 'all';
-      }
-    }
-  });
+  static TYPE = IType.createType('Consumable', 'Equipment', 'Key');
 
   /**
    * 아이템 템플릿 클래스
