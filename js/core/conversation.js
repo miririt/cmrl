@@ -13,7 +13,7 @@ export default class Conversation extends ISerializable {
    * @readonly
    * @enum {Symbol}
    */
-  static TYPE = IType.createType('Narration', 'Choice', 'Quest');
+  static TYPE = IType.createType('Narration', 'Choice');
 
   /**
    * 새 Conversation 생성
