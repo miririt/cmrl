@@ -1,5 +1,5 @@
 [{
-    "type": "consumable",
+    "type": "Consumable",
     "name": "황금색 모래시계",
     "maxQuantity": 999
 }]

@@ -28,7 +28,7 @@ export default class EffectManager extends CreateManager(Effect) {
     const effect = this.getObject(effectName);
 
     switch(effect.type) {
-      case 'get-money':
+      case 'Get-money':
         this._getTargetCharacter(effect.data.targetName).giveMoney(effect.data.amount);
         break;
     }
@@ -45,7 +45,7 @@ export default class EffectManager extends CreateManager(Effect) {
     const effect = this.getObject(effectName);
 
     switch(effect.type) {
-      case 'get-money':
+      case 'Get-money':
         this._getTargetCharacter(effect.data.targetName).giveMoney(-effect.data.amount);
         break;
     }

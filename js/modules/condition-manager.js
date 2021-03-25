@@ -50,7 +50,7 @@ export default class ConditionManager extends CreateManager(Condition) {
     }
 
     switch(condition.type) {
-      case 'money':
+      case 'Money':
         const targetValue = this._gameInstance.characterManager.getObject(condition.data.character)._money;
         return this._checkRange(targetValue, condition.data);
     }

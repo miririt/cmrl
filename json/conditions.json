@@ -1,6 +1,6 @@
 [{
     "name": "돈 5000원 이상 소유",
-    "type": "money",
+    "type": "Money",
     "data": {
         "character": "$Player",
         "operator": ">=",
